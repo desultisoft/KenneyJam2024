@@ -14,14 +14,33 @@ public class Pentagram : MonoBehaviour
     [Header("Slots")]
     public List<ItemSlot> candleSlots;
 
+    [Header("Debugging Shapes")]
+    [SerializeField] Shape pentagram;
+    [SerializeField] Shape square;
+    [SerializeField] Shape triangle;
+
     int lastIndex = 0;
 
     PostProcessingController postProcessingController;
+    DatingProfile datingProfile;
     ItemSacrifice itemSacrifice;
 
     private void Start()
     {
         postProcessingController = PostProcessingController.PostProcessingSingleton;
+        datingProfile = DatingProfile.datingProfile;
+        switch (datingProfile.numRunes)
+        {
+            case 3:
+                requiredShape = triangle;
+                break;
+            case 4:
+                requiredShape = square;
+                break;
+            case 5:
+                requiredShape = pentagram;
+                break;
+        }
     }
 
     void Awake()

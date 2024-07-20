@@ -45,22 +45,23 @@ public class ItemSacrifice : MonoBehaviour
         {
             case 5:
                 itemSlots[0].gameObject.SetActive(true);
+                itemSlots[0].transform.position = new Vector3(0.0f, 0.3125f);
                 activeSlots = 1;
                 return;
             case 4:
                 itemSlots[0].gameObject.SetActive(true);
-                itemSlots[0].transform.position = new Vector3(-0.75f, 0);
+                itemSlots[0].transform.position = new Vector3(-0.625f, -0.125f);
                 itemSlots[1].gameObject.SetActive(true);
-                itemSlots[1].transform.position = new Vector3(0.75f, 0);
+                itemSlots[1].transform.position = new Vector3(0.625f, -0.125f);
                 activeSlots = 2;
                 return;
             case 3:
                 itemSlots[0].gameObject.SetActive(true);
-                itemSlots[0].transform.position = new Vector3(-0.375f, 0.375f); 
+                itemSlots[0].transform.position = new Vector3(0, 0.3f); 
                 itemSlots[1].gameObject.SetActive(true);
-                itemSlots[1].transform.position = new Vector3(0, -0.375f);
+                itemSlots[1].transform.position = new Vector3(0.5f, -0.64f);
                 itemSlots[2].gameObject.SetActive(true);
-                itemSlots[2].transform.position = new Vector3(0.375f, 0.375f);
+                itemSlots[2].transform.position = new Vector3(-0.5f, -0.64f);
                 activeSlots = 3;
                 return;
         }

@@ -14,11 +14,11 @@ public class DatingProfile : MonoBehaviour
     void Awake()
     {
         datingProfile = this;
+        GenerateProfile();
     }
 
     private void Start()
     {
-        GenerateProfile();
     }
 
     void GenerateProfile()
