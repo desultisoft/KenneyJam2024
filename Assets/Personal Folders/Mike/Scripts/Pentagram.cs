@@ -128,6 +128,8 @@ public class Pentagram : MonoBehaviour
     //Draw the current pentagram.
     public void OnDrawGizmosSelected()
     {
+        if (requiredShape == null) return;
+
         List<Vector2Int> currentConnections = requiredShape.totalRequiredConnections.Except(currentRequiredConnections).ToList();
         float radius = 0.2f;
         foreach (Vector2Int connection in currentConnections)
