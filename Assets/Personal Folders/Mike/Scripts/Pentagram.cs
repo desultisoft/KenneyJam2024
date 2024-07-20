@@ -4,24 +4,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-/// <summary>
-/// If I draw a pentagram it unlocks a center.
-/// Triangle gives you three spots.
-/// Square gives you four.
-/// When something is made incorrectly candles pop off, destroying lines.
-/// </summary>
-
-
 public class Pentagram : MonoBehaviour
 {
     [Header("Data")]
     public List<int> activatedCandles = new List<int>();
-    public List<Vector2Int> totalRequiredConnections = new List<Vector2Int>();
     public List<Vector2Int> currentRequiredConnections = new List<Vector2Int>();
+    public Shape requiredShape;
 
     [Header("Slots")]
     public List<ItemSlot> candleSlots;
-
 
     int lastIndex = 0;
 
@@ -45,18 +36,19 @@ public class Pentagram : MonoBehaviour
 
     private bool IsPentagramComplete()
     {
-        if (activatedCandles.Count < totalRequiredConnections.Count)
-        {
-            return false;
-        }
-        currentRequiredConnections = new List<Vector2Int>(totalRequiredConnections);
+        currentRequiredConnections = new List<Vector2Int>(requiredShape.totalRequiredConnections);
         for (int i = currentRequiredConnections.Count - 1; i >= 0; i--)
         {
-            Vector2Int requiredConnection = totalRequiredConnections[i];
+            Vector2Int requiredConnection = requiredShape.totalRequiredConnections[i];
             if (activatedCandles.Contains(requiredConnection.x) && activatedCandles.Contains(requiredConnection.y))
             {
                 currentRequiredConnections.Remove(requiredConnection);
             }
+        }
+
+        if (activatedCandles.Count < requiredShape.totalRequiredConnections.Count)
+        {
+            return false;
         }
 
         if (currentRequiredConnections.Count == 0)
@@ -81,8 +73,12 @@ public class Pentagram : MonoBehaviour
     private void HandleDeposit(ItemSlot slot, Item item)
     {
         int depositIndex = candleSlots.FindIndex(x => x==slot);
+
         Vector2Int newConnection = new Vector2Int(lastIndex, depositIndex);
-        bool isRequired = totalRequiredConnections.Contains(newConnection);
+        Vector2Int reverseConnection = new Vector2Int(depositIndex, lastIndex);
+
+        bool isRequired = requiredShape.totalRequiredConnections.Contains(newConnection) || requiredShape.totalRequiredConnections.Contains(reverseConnection);
+
         Debug.Log($"Handling Deposit at Index {depositIndex}: {slot.gameObject.name}");
         Debug.Log($"Attempting connection: { newConnection } and requirement is: {isRequired} {activatedCandles.Count>0}");
 
@@ -106,15 +102,14 @@ public class Pentagram : MonoBehaviour
         {
             postProcessingController.StartChromaticEffect(0.25f, 0.75f);
             postProcessingController.StartCameraShake(0.05f, 0.2f);
-            itemSacrifice.SetSacrificeSlots(totalRequiredConnections.Count());
+            itemSacrifice.SetSacrificeSlots(requiredShape.totalRequiredConnections.Count());
         }
     }
-
 
     //Draw the current pentagram.
     public void OnDrawGizmosSelected()
     {
-        List<Vector2Int> currentConnections = totalRequiredConnections.Except(currentRequiredConnections).ToList();
+        List<Vector2Int> currentConnections = requiredShape.totalRequiredConnections.Except(currentRequiredConnections).ToList();
         float radius = 0.2f;
         foreach (Vector2Int connection in currentConnections)
         {
@@ -128,4 +123,5 @@ public class Pentagram : MonoBehaviour
             radius += 0.1f;
         }
     }
+
 }

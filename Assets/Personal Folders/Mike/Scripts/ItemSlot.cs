@@ -13,15 +13,11 @@ public class ItemSlot : MonoBehaviour
     [Header("Rejection")]
     public float jumpPower = 2f;
     public int numJumps = 1;
-    public float duration = 1f;
+    public float shakeDuration = 1f;
+    public float jumpDuration = 0.2f;
     public float scatter = 0.2f;
-
-    [Header("Shake")]
+    public float avoidance = 1f;
     public float shakeDelay = 0.3f;
-    public float shakeDuration = 0.25f;
-    public float shakeStrength = 0.25f;
-    public int shakeVibrato = 1;
-    public float shakeRandomness = 0.25f;
 
     public event Action<ItemSlot, Item> onDeposit = delegate{ };
     public event Action<ItemSlot, Item> onWithdraw = delegate { };
@@ -75,16 +71,25 @@ public class ItemSlot : MonoBehaviour
 
     public IEnumerator HandleRejection()
     {
-        currentItem.EnablePickup(false);
+        Vector3 scatteramount = new Vector3(1, 1, 0) * UnityEngine.Random.Range(-scatter, scatter);
+        Vector3 jumpTarget = transform.localPosition.normalized * avoidance;
 
-        yield return new WaitForSeconds(0.5f);
-        Sequence sequence = DOTween.Sequence();
-        sequence.Append(currentItem.transform.DOShakePosition(shakeDuration, shakeStrength, shakeVibrato, shakeRandomness));
-        sequence.Append(currentItem.gameObject.transform.DOJump(transform.position + (new Vector3(1, 1, 0) * UnityEngine.Random.Range(-scatter, scatter)), jumpPower, numJumps, duration)
+        currentItem.EnablePickup(false);
+        Sequence mySequence = DOTween.Sequence().Pause();
+        mySequence.Append(currentItem.transform.DOShakePosition(shakeDuration, new Vector3(0.018f, 0, 0), 20, 0, false, false));
+        mySequence.Append(currentItem.gameObject.transform.DOJump(jumpTarget + transform.position, jumpPower, numJumps, jumpDuration)
             .SetEase(Ease.OutQuad)
-            .OnComplete(() => {
+            .OnComplete(() =>
+            {
                 currentItem.EnablePickup(true);
                 currentItem = null;
-            }));
+            }
+        ));
+
+        yield return new WaitForSeconds(shakeDelay);
+
+        mySequence.Play();
+        
+        
     }
 }
