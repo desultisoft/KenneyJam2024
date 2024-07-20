@@ -22,12 +22,9 @@ public class ItemSlot : MonoBehaviour
     public event Action<ItemSlot, Item> onDeposit = delegate{ };
     public event Action<ItemSlot, Item> onWithdraw = delegate { };
 
-
-
-
     public bool AcceptsItem(Item targetItem)
     {
-        if (!targetItem)
+        if (!targetItem || currentItem)
             return false;
 
         return acceptedItemIDs.Contains(targetItem.itemID);

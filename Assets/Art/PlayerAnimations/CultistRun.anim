@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ImpRun
+  m_Name: CultistRun
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,18 +20,18 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: 21300000, guid: fbb34c50f2dda6f4bafad75e9fc104e2, type: 2}
-    - time: 0.125
-      value: {fileID: 21300000, guid: 88a71e98b5bd68d419fa1ff62a609e12, type: 2}
+      value: {fileID: 1551713952, guid: 601aa2c91a517064e9a743c883846abf, type: 3}
+    - time: 0.083333336
+      value: {fileID: -1872147317, guid: 601aa2c91a517064e9a743c883846abf, type: 3}
+    - time: 0.16666667
+      value: {fileID: 1110662289, guid: 601aa2c91a517064e9a743c883846abf, type: 3}
     - time: 0.25
-      value: {fileID: 21300000, guid: 21cb2c342a42aef4887c361404cf38a9, type: 2}
-    - time: 0.375
-      value: {fileID: 21300000, guid: 8bf8ee9e503564044b7967311289a436, type: 2}
+      value: {fileID: -1925386040, guid: 601aa2c91a517064e9a743c883846abf, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
     script: {fileID: 0}
-  m_SampleRate: 8
+  m_SampleRate: 12
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -46,16 +46,16 @@ AnimationClip:
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: 21300000, guid: fbb34c50f2dda6f4bafad75e9fc104e2, type: 2}
-    - {fileID: 21300000, guid: 88a71e98b5bd68d419fa1ff62a609e12, type: 2}
-    - {fileID: 21300000, guid: 21cb2c342a42aef4887c361404cf38a9, type: 2}
-    - {fileID: 21300000, guid: 8bf8ee9e503564044b7967311289a436, type: 2}
+    - {fileID: 1551713952, guid: 601aa2c91a517064e9a743c883846abf, type: 3}
+    - {fileID: -1872147317, guid: 601aa2c91a517064e9a743c883846abf, type: 3}
+    - {fileID: 1110662289, guid: 601aa2c91a517064e9a743c883846abf, type: 3}
+    - {fileID: -1925386040, guid: 601aa2c91a517064e9a743c883846abf, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.5
+    m_StopTime: 0.33333334
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -82,7 +82,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.125
+  - time: 0.083333336
     functionName: PlayRandomSound
     data: 
     objectReferenceParameter: {fileID: 0}
