@@ -21,12 +21,6 @@ public class DatingProfile : MonoBehaviour
         GenerateProfile();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void GenerateProfile()
     {
         numRunes = Random.Range(3, 6);

@@ -6,15 +6,26 @@ using UnityEngine;
 public class ItemSacrifice : MonoBehaviour
 {
     private ItemSlot[] itemSlots;
+    int filledSlots;
     public ItemSlot[] ItemSlots { get { return itemSlots; } }
     private DatingProfile datingProfile;
     private PostProcessingController postProcessingController;
     private int activeSlots;
+
+    private GameObject conductingSpot;
+
     private void Awake()
     {
         itemSlots = GetComponentsInChildren<ItemSlot>();
         int numSlots = itemSlots.Length;
-        foreach (ItemSlot itemSlot in itemSlots) itemSlot.gameObject.SetActive(false);
+        foreach (ItemSlot itemSlot in itemSlots)
+        {
+            itemSlot.gameObject.SetActive(false);
+            itemSlot.onDeposit += HandleDeposit;
+            itemSlot.onWithdraw += HandleWithdraw;
+        }
+        conductingSpot = GameObject.Find("Conducting spot");
+        conductingSpot.SetActive(false);
         if (numSlots < 3)
         {
             Debug.LogError("This system assumes at least 3 slots");
@@ -29,7 +40,8 @@ public class ItemSacrifice : MonoBehaviour
     }
     public void SetSacrificeSlots(int numCandles)
     {
-        switch (numCandles)
+        int numRunes = datingProfile.numRunes;
+        switch (numRunes)
         {
             case 5:
                 itemSlots[0].gameObject.SetActive(true);
@@ -63,10 +75,30 @@ public class ItemSacrifice : MonoBehaviour
         }
     }
 
+    void HandleWithdraw(ItemSlot slot, Item item)
+    {
+        filledSlots--;
+    }
+
+    void HandleDeposit(ItemSlot slot, Item item)
+    {
+        filledSlots++;
+        if (filledSlots >= activeSlots)
+        {
+            if (CompareRunes())
+            {
+                conductingSpot.SetActive(true);
+                postProcessingController.StartChromaticEffect(0.4f, 1.0f);
+                postProcessingController.StartCameraShake(0.1f, 0.4f);
+            }
+        }
+    }
+
     bool CompareRunes()
     {
         runes[] correctRunes = datingProfile.runeTypes;
-        runes[] itemRunes = new runes[correctRunes.Length];
+        List<runes> itemRunes = GetRunes();
+        print(itemRunes.Count());
         if (activeSlots == 3)
         {
             itemRunes[0] = itemSlots[0].currentItem.runes[0];
@@ -86,14 +118,13 @@ public class ItemSacrifice : MonoBehaviour
             itemRunes[1] = itemSlots[0].currentItem.runes[1];
             itemRunes[2] = itemSlots[0].currentItem.runes[2];
             itemRunes[3] = itemSlots[0].currentItem.runes[3];
-            itemRunes[3] = itemSlots[0].currentItem.runes[4];
+            itemRunes[4] = itemSlots[0].currentItem.runes[4];
         }
         for (int i = 0; i < correctRunes.Length; i++)
         {
+            print("Expected rune " + correctRunes[i] + " Got rune " + itemRunes[i]);
             if (itemRunes[i] != correctRunes[i]) return false;
         }
-        postProcessingController.StartChromaticEffect(0.25f, 0.75f);
-        postProcessingController.StartCameraShake(0.05f, 0.2f);
         return true;
     }
 
@@ -102,7 +133,7 @@ public class ItemSacrifice : MonoBehaviour
     {
         if (itemSlots.Length == 0) return new List<runes>();
 
-        IEnumerable<Item> items = ItemSlots.Select(x => x.currentItem);
+        IEnumerable<Item> items = ItemSlots.Where(x => x.gameObject.activeInHierarchy).Select(x => x.currentItem);
         List<runes> allRunes = items.SelectMany(item => item.runes).ToList();
         return allRunes;
     }
