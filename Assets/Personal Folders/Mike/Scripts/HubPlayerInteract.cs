@@ -16,8 +16,8 @@ public class HubPlayerInteract : MonoBehaviour
     public Material defaultMaterial;
 
     #region Getters/Setters
-    private Item targetItem;
-    public Item TargetItem
+    private Interactable targetItem;
+    public Interactable TargetItem
     {
         get
         {
@@ -30,12 +30,12 @@ public class HubPlayerInteract : MonoBehaviour
                 return;
             }
 
-            if(targetItem)
+            if(targetItem != null)
                 TryHighLight(targetItem.gameObject, false);
 
             targetItem = value;
 
-            if(targetItem)
+            if(targetItem != null)
                 TryHighLight(targetItem.gameObject, true);
         }
     }
@@ -174,7 +174,7 @@ public class HubPlayerInteract : MonoBehaviour
             {
                 PutDown();
             }
-            else if(targetItem)
+            else if(targetItem != null)
             {
                 targetItem.Interact(gameObject);
             }

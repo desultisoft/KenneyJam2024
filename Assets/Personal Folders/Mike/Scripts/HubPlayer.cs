@@ -6,6 +6,9 @@ public class HubPlayer : MonoBehaviour
     private SpriteRenderer renderer;
     private Rigidbody2D rb;
     private Vector2 moveInput;
+
+    private bool autoMoveOn;
+    private Vector3 autoMoveTarget;
     public bool canMove { get; private set; }
 
     public float moveSpeed = 5f;
@@ -44,6 +47,13 @@ public class HubPlayer : MonoBehaviour
             // Move the player using the Rigidbody2D
             rb.velocity = moveInput * moveSpeed;
         }
+        else if(autoMoveOn)
+        {
+            Vector3 moveDir = (autoMoveTarget - transform.position);
+            const float targetRange = 0.1f;
+            rb.velocity = moveDir.normalized * moveSpeed;
+            if (moveDir.magnitude < targetRange) autoMoveOn = false;
+        }
         else
         {
             rb.velocity = Vector2.zero;
@@ -54,5 +64,11 @@ public class HubPlayer : MonoBehaviour
     public void SetCanMove(bool isOn)
     {
         canMove = isOn;
+    }
+
+    public void SetAutoTarget(Vector3 targetPosition)
+    {
+        autoMoveTarget = targetPosition;
+        autoMoveOn = true;
     }
 }

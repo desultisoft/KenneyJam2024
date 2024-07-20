@@ -4,18 +4,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item : Interactable
 {
     public int itemID;
 
     Collider2D coll;
+
+    public GameObject GetGameObject() { return gameObject; }
 
     public void Awake()
     {
         coll = GetComponent<Collider2D>();
     }
 
-    public void Interact(GameObject interactor)
+    public override void Interact(GameObject interactor)
     {
         HubPlayerInteract target = interactor.GetComponent<HubPlayerInteract>();
         if (target == null)

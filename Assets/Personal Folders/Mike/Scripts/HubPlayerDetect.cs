@@ -6,12 +6,12 @@ public class HubPlayerDetect : MonoBehaviour
 {
     public float radius;
     public ItemSlot targetSlot;
-    public Item targetItem;
+    public Interactable targetItem;
 
     public void Update()
     {
         targetSlot = FindClosestObject<ItemSlot>();
-        targetItem = FindClosestObject<Item>();
+        targetItem = FindClosestObject<Interactable>();
     }
 
     T FindClosestObject<T>() where T : Component
