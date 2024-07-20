@@ -21,11 +21,11 @@ public class Pentagram : MonoBehaviour
 
     [Header("Slots")]
     public List<ItemSlot> candleSlots;
-    public List<ItemSlot> ingredientSlots;
 
     int lastIndex = 0;
 
     PostProcessingController postProcessingController;
+    ItemSacrifice itemSacrifice;
 
     private void Start()
     {
@@ -34,7 +34,7 @@ public class Pentagram : MonoBehaviour
 
     void Awake()
     {
-
+        itemSacrifice = GetComponentInChildren<ItemSacrifice>();
         foreach(ItemSlot slot in candleSlots)
         {
             slot.onDeposit += HandleDeposit;
@@ -105,6 +105,7 @@ public class Pentagram : MonoBehaviour
         {
             postProcessingController.StartChromaticEffect(0.25f, 0.75f);
             postProcessingController.StartCameraShake(0.05f, 0.2f);
+            itemSacrifice.SetSacrificeSlots(totalRequiredConnections.Count());
         }
     }
 

@@ -7,7 +7,7 @@ using UnityEngine;
 public class Item : Interactable
 {
     public int itemID;
-
+    public runes[] runes;
     Collider2D coll;
 
     public GameObject GetGameObject() { return gameObject; }

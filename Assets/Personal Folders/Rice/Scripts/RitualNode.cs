@@ -8,6 +8,7 @@ public enum runes
     T = 1,
     L = 2,
     I = 3,
+    O = 4,
     none = -1
 }
 public class RitualNode : MonoBehaviour
