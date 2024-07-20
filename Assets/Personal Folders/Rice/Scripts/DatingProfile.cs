@@ -5,8 +5,11 @@ using UnityEngine;
 public class DatingProfile : MonoBehaviour
 {
     public static DatingProfile datingProfile;
+    Pentagram pentagram;
     public int numRunes;
     public runes[] runeTypes;
+
+    public bool profileObtained;
 
     [SerializeField] Item[] items;
 
@@ -14,15 +17,16 @@ public class DatingProfile : MonoBehaviour
     void Awake()
     {
         datingProfile = this;
-        GenerateProfile();
     }
 
     private void Start()
     {
+        pentagram = Pentagram.pentagram;
     }
 
-    void GenerateProfile()
+    public void GenerateProfile()
     {
+        if (profileObtained == true) return;
         numRunes = Random.Range(3, 6);
         runeTypes = new runes[numRunes];
         int numItems = items.Length;
@@ -35,22 +39,24 @@ public class DatingProfile : MonoBehaviour
                 runeTypes[1] = items[randomIndex].runes[0];
                 randomIndex = LoopIndex(randomIndex + Random.Range(0, numItems), numItems);
                 runeTypes[2] = items[randomIndex].runes[0];
-                return;
+                break;
             case 4:
                 runeTypes[0] = items[randomIndex].runes[0];
                 runeTypes[1] = items[randomIndex].runes[1];
                 randomIndex = LoopIndex(randomIndex + Random.Range(0, numItems), numItems);
                 runeTypes[2] = items[randomIndex].runes[0];
                 runeTypes[3] = items[randomIndex].runes[1];
-                return;
+                break;
             case 5:
                 runeTypes[0] = items[randomIndex].runes[0];
                 runeTypes[1] = items[randomIndex].runes[1];
                 runeTypes[2] = items[randomIndex].runes[2];
                 runeTypes[3] = items[randomIndex].runes[3];
                 runeTypes[4] = items[randomIndex].runes[4];
-                return;
+                break;
         }
+        pentagram.SetShape(numRunes);
+        profileObtained = true;
     }
 
     private int LoopIndex(int index, int max)

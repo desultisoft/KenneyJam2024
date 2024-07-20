@@ -12,6 +12,8 @@ public class ItemSacrifice : MonoBehaviour
     private PostProcessingController postProcessingController;
     private int activeSlots;
 
+    private RitualNode[] groundRunes;
+
     private GameObject conductingSpot;
 
     private void Awake()
@@ -31,6 +33,9 @@ public class ItemSacrifice : MonoBehaviour
             Debug.LogError("This system assumes at least 3 slots");
             Debug.Break();
         }
+
+        groundRunes = GetComponentsInChildren<RitualNode>();
+        foreach (RitualNode node in groundRunes) node.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -84,6 +89,7 @@ public class ItemSacrifice : MonoBehaviour
     void HandleDeposit(ItemSlot slot, Item item)
     {
         filledSlots++;
+        DrawRunes(item, slot.order);
         if (filledSlots >= activeSlots)
         {
             if (CompareRunes())
@@ -93,6 +99,83 @@ public class ItemSacrifice : MonoBehaviour
                 postProcessingController.StartCameraShake(0.1f, 0.4f);
             }
         }
+    }
+
+    void DrawRunes(Item item, int slot)
+    {
+        bool itemCorrect = false;
+        switch (activeSlots)
+        {
+            case 1:
+                itemCorrect = CompareRune(item, slot);
+                groundRunes[0].gameObject.SetActive(true);
+                groundRunes[0].transform.position = new Vector3(0.8f, 1.35f);
+                groundRunes[0].ChangeRune(item.runes[0], itemCorrect);
+
+                groundRunes[1].gameObject.SetActive(true);
+                groundRunes[1].transform.position = new Vector3(1.6f, -0.175f);
+                groundRunes[1].ChangeRune(item.runes[1], itemCorrect);
+
+                groundRunes[2].gameObject.SetActive(true);
+                groundRunes[2].transform.position = new Vector3(0.0f, -1.65f);
+                groundRunes[2].ChangeRune(item.runes[2], itemCorrect);
+
+                groundRunes[3].gameObject.SetActive(true);
+                groundRunes[3].transform.position = new Vector3(-1.6f, -0.175f);
+                groundRunes[3].ChangeRune(item.runes[3], itemCorrect);
+
+                groundRunes[4].gameObject.SetActive(true);
+                groundRunes[4].transform.position = new Vector3(-0.8f, 1.35f);
+                groundRunes[4].ChangeRune(item.runes[4], itemCorrect);
+                break;
+            case 2:
+                Vector3[] positions = { new Vector3(0.0f, 1.35f), new Vector3(1.75f, -0.175f), new Vector3(0.0f, -1.65f), new Vector3(-1.75f, -0.175f) };
+                itemCorrect = CompareRune(item, slot);
+                print("Slot: " + slot + "runes: " + (int)item.runes[0] + " " + (int)item.runes[1]);
+                groundRunes[slot * 2].gameObject.SetActive(true);
+                groundRunes[slot * 2].transform.position = positions[slot * 2];
+                groundRunes[slot * 2].ChangeRune(item.runes[0], itemCorrect);
+
+                groundRunes[slot * 2 + 1].gameObject.SetActive(true);
+                groundRunes[slot * 2 + 1].transform.position = positions[slot * 2 + 1];
+                groundRunes[slot * 2 + 1].ChangeRune(item.runes[1], itemCorrect);
+                break;
+            case 3:
+                Vector3[] positions2 = { new Vector3(1.2f, 0.65f), new Vector3(0.0f, -1.65f), new Vector3(-1.2f, 0.65f) };
+                itemCorrect = CompareRune(item, slot);
+                groundRunes[slot].gameObject.SetActive(true);
+                groundRunes[slot].transform.position = positions2[slot];
+                groundRunes[slot].ChangeRune(item.runes[0], itemCorrect);
+                break;
+        }
+    }
+
+    bool CompareRune(Item item, int slot)
+    {
+        runes[] correctRunes = datingProfile.runeTypes;
+        runes[] itemRunes = item.runes;
+        if (activeSlots == 3)
+        {
+            for (int i = 0; i < correctRunes.Length; i++)
+            {
+                if (itemRunes[i] != correctRunes[i]) return false;
+            }
+            return true;
+        }
+        else if (activeSlots == 2)
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                if (itemRunes[i] != correctRunes[i + slot*2]) return false;
+            }
+            return true;
+        }
+        else if (activeSlots == 1)
+        {
+            if (itemRunes[0] != correctRunes[slot]) return false;
+            return true;
+        }
+        return false;
     }
 
     bool CompareRunes()

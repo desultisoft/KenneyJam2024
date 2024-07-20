@@ -11,7 +11,9 @@ public class SummoningProgress : MonoBehaviour
     private SpriteRenderer progressRenderer;
     private PostProcessingController postProcessingController;
     private ParticleSystem runeParticleSystem;
+    private int angleID;
     private int arcPointID;
+    private int startPointID;
 
     private float numSymbols;
     public float progress = 0.0f;
@@ -27,6 +29,8 @@ public class SummoningProgress : MonoBehaviour
         postProcessingController = PostProcessingController.PostProcessingSingleton;
         runeParticleSystem = GetComponentInChildren<ParticleSystem>();
         arcPointID = Shader.PropertyToID("_Arc2");
+        startPointID = Shader.PropertyToID("_Arc1");
+        angleID = Shader.PropertyToID("_Angle");
     }
 
     private void Update()
@@ -54,6 +58,7 @@ public class SummoningProgress : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.DownArrow)) chantType = runes.T;
         else if (Input.GetKeyDown(KeyCode.LeftArrow)) chantType = runes.L;
         else if (Input.GetKeyDown(KeyCode.RightArrow)) chantType = runes.I;
+        else if (Input.GetKeyDown(KeyCode.Space)) chantType = runes.O;
 
         if (chantType < 0) return;
         if (ritualNodes[chantIndex].chantAttempted == true)
@@ -85,11 +90,32 @@ public class SummoningProgress : MonoBehaviour
     {
         conductingSpot = _conductingSpot;
         ritualNodes = _ritualNodes;
+        int numNodes = ritualNodes.Count;
         numSymbols = ritualNodes.Count;
-        if (progressIntervals.Length != numSymbols)
+        progressIntervals = new float[numNodes];
+        switch (numNodes)
         {
-            Debug.LogError("Number of progress intervals incorrect");
-            Debug.Break();
+            case 3:
+                progressRenderer.material.SetFloat(angleID, 90.0f);
+                progressIntervals[0] = 0.3777777f;
+                progressIntervals[1] = 0.62222f;
+                progressIntervals[2] = 1.0f;
+                break;
+            case 4:
+                progressRenderer.material.SetFloat(angleID, 153.0f);
+                progressIntervals[0] = 0.35f;
+                progressIntervals[1] = 0.55f;
+                progressIntervals[2] = 0.8f;
+                progressIntervals[3] = 1.0f;
+                break;
+            case 5:
+                progressRenderer.material.SetFloat(angleID, 153.0f);
+                progressIntervals[0] = 0.275f;
+                progressIntervals[1] = 0.4695f; 
+                progressIntervals[2] = 0.6417f;
+                progressIntervals[2] = 0.8139f;
+                progressIntervals[3] = 1.0f;
+                break;
         }
         progress = 0;
         lastChant = 0;

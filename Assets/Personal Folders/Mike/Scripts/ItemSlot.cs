@@ -10,6 +10,9 @@ public class ItemSlot : MonoBehaviour
     public List<int> acceptedItemIDs;
     public Item currentItem;
 
+    [Header("Order")]
+    public int order;
+
     [Header("Rejection")]
     public float jumpPower = 2f;
     public int numJumps = 1;

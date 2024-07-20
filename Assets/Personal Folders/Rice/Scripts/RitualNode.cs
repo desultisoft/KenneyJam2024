@@ -21,11 +21,13 @@ public class RitualNode : MonoBehaviour
     private Color targetColor;
 
     SpriteRenderer spriteRenderer;
+    [SerializeField] Sprite[] correctRuneSprites;
+    [SerializeField] Sprite[] incorrectRuneSprites;
 
     public runes requiredRune = runes.none;
     [HideInInspector] public bool chantAttempted = false;
     [HideInInspector] public bool chantSucceeded = false;
-    private void Start()
+    private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         originColor = spriteRenderer.color;
@@ -69,12 +71,18 @@ public class RitualNode : MonoBehaviour
         StartFlash();
         return chantSucceeded;
     }
-
     public void ResetState()
     {
         targetColor = Color.black;
         StartFlash();
         chantAttempted = false;
         chantSucceeded = false;
+    }
+
+    public void ChangeRune(runes _rune, bool isCorrect)
+    {
+        requiredRune = _rune;
+        if (isCorrect) spriteRenderer.sprite = correctRuneSprites[(int)_rune];
+        else spriteRenderer.sprite = incorrectRuneSprites[(int)_rune];
     }
 }

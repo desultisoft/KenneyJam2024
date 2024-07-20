@@ -4,6 +4,7 @@ using DG.Tweening;
 
 public class UIFlyAndFlip : MonoBehaviour
 {
+    public static UIFlyAndFlip uIFlyAndFlip;
     public RectTransform uiImage; // Assign the RectTransform of the UI image in the Inspector
     public float flyToCenterDuration = 1f; // Duration for flying to the center
     public float scaleUpDuration = 1f; // Duration for scaling up
@@ -13,6 +14,11 @@ public class UIFlyAndFlip : MonoBehaviour
     public float maxScale = 3f;
 
     private Sequence mySequence;
+
+    private void Awake()
+    {
+        uIFlyAndFlip = this;
+    }
 
     void Start()
     {
@@ -47,9 +53,6 @@ public class UIFlyAndFlip : MonoBehaviour
         mySequence.Append(uiImage.DOScaleX(-2, flipDuration)) // Flip horizontally
                   .Append(uiImage.DOAnchorPos(offsetTopRightCanvasPosition, flyToTopRightDuration))
                   .Join(uiImage.DOScale(Vector3.one, scaleDownDuration)); // Scale down
-
-        // Start the sequence (if you want to start it immediately, otherwise call StartSequence() method)
-        mySequence.Play();
     }
 
     // Call this method to start the sequence

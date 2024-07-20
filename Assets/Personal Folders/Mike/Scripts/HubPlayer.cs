@@ -3,7 +3,7 @@ using UnityEngine;
 public class HubPlayer : MonoBehaviour
 {
     private Animator animator;
-    private SpriteRenderer renderer;
+    private SpriteRenderer myRenderer;
     private Rigidbody2D rb;
     private Vector2 moveInput;
 
@@ -16,7 +16,7 @@ public class HubPlayer : MonoBehaviour
     void Awake()
     {
         rb = GetComponentInChildren<Rigidbody2D>();
-        renderer = GetComponentInChildren<SpriteRenderer>();
+        myRenderer = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
 
         canMove = true;
@@ -37,7 +37,7 @@ public class HubPlayer : MonoBehaviour
         float xVelocity = Mathf.Abs(rb.velocity.x);
         animator.SetFloat("xVelocity", xVelocity);
 
-        renderer.flipX = rb.velocity.x < 0.1;
+        myRenderer.flipX = rb.velocity.x < 0.1;
     }
 
     void FixedUpdate()

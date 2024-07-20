@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class Pentagram : MonoBehaviour
 {
+    public static Pentagram pentagram;
     [Header("Data")]
     public List<int> activatedCandles = new List<int>();
     public List<Vector2Int> currentRequiredConnections = new List<Vector2Int>();
@@ -15,9 +16,9 @@ public class Pentagram : MonoBehaviour
     public List<ItemSlot> candleSlots;
 
     [Header("Debugging Shapes")]
-    [SerializeField] Shape pentagram;
-    [SerializeField] Shape square;
-    [SerializeField] Shape triangle;
+    [SerializeField] Shape pentagramShape;
+    [SerializeField] Shape squareShape;
+    [SerializeField] Shape triangleShape;
 
     int lastIndex = 0;
 
@@ -29,18 +30,7 @@ public class Pentagram : MonoBehaviour
     {
         postProcessingController = PostProcessingController.PostProcessingSingleton;
         datingProfile = DatingProfile.datingProfile;
-        switch (datingProfile.numRunes)
-        {
-            case 3:
-                requiredShape = triangle;
-                break;
-            case 4:
-                requiredShape = square;
-                break;
-            case 5:
-                requiredShape = pentagram;
-                break;
-        }
+        pentagram = this;
     }
 
     void Awake()
@@ -50,6 +40,22 @@ public class Pentagram : MonoBehaviour
         {
             slot.onDeposit += HandleDeposit;
             slot.locked = true;
+        }
+    }
+
+    public void SetShape(int _numRunes)
+    {
+        switch (_numRunes)
+        {
+            case 3:
+                requiredShape = triangleShape;
+                break;
+            case 4:
+                requiredShape = squareShape;
+                break;
+            case 5:
+                requiredShape = pentagramShape;
+                break;
         }
     }
 
