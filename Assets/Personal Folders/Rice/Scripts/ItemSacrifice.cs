@@ -81,9 +81,50 @@ public class ItemSacrifice : MonoBehaviour
         }
     }
 
-    void HandleWithdraw(ItemSlot slot, Item item)
+    void HandleWithdraw(ItemSlot itemSlot, Item item)
     {
         filledSlots--;
+        int slot = itemSlot.order;
+        switch (activeSlots)
+        {
+            case 1:
+                groundRunes[0].gameObject.SetActive(false);
+                groundRunes[0].transform.position = new Vector3(0.8f, 1.35f);
+                groundRunes[0].ChangeRune(runes.none, false);
+
+                groundRunes[1].gameObject.SetActive(false);
+                groundRunes[1].transform.position = new Vector3(1.6f, -0.175f);
+                groundRunes[1].ChangeRune(runes.none, false);
+
+                groundRunes[2].gameObject.SetActive(false);
+                groundRunes[2].transform.position = new Vector3(0.0f, -1.65f);
+                groundRunes[2].ChangeRune(runes.none, false);
+
+                groundRunes[3].gameObject.SetActive(false);
+                groundRunes[3].transform.position = new Vector3(-1.6f, -0.175f);
+                groundRunes[3].ChangeRune(runes.none, false);
+
+                groundRunes[4].gameObject.SetActive(false);
+                groundRunes[4].transform.position = new Vector3(-0.8f, 1.35f);
+                groundRunes[4].ChangeRune(runes.none, false);
+                break;
+            case 2:
+                Vector3[] positions = { new Vector3(0.0f, 1.35f), new Vector3(1.75f, -0.175f), new Vector3(0.0f, -1.65f), new Vector3(-1.75f, -0.175f) };
+                groundRunes[slot * 2].gameObject.SetActive(false);
+                groundRunes[slot * 2].transform.position = positions[slot * 2];
+                groundRunes[slot * 2].ChangeRune(runes.none, false);
+
+                groundRunes[slot * 2 + 1].gameObject.SetActive(true);
+                groundRunes[slot * 2 + 1].transform.position = positions[slot * 2 + 1];
+                groundRunes[slot * 2 + 1].ChangeRune(runes.none, false);
+                break;
+            case 3:
+                Vector3[] positions2 = { new Vector3(1.2f, 0.65f), new Vector3(0.0f, -1.65f), new Vector3(-1.2f, 0.65f) };
+                groundRunes[slot].gameObject.SetActive(true);
+                groundRunes[slot].transform.position = positions2[slot];
+                groundRunes[slot].ChangeRune(runes.none, false);
+                break;
+        }
     }
 
     void HandleDeposit(ItemSlot slot, Item item)
@@ -156,10 +197,7 @@ public class ItemSacrifice : MonoBehaviour
         runes[] itemRunes = item.runes;
         if (activeSlots == 3)
         {
-            for (int i = 0; i < correctRunes.Length; i++)
-            {
-                if (itemRunes[i] != correctRunes[i]) return false;
-            }
+            if (itemRunes[0] != correctRunes[slot]) return false;
             return true;
         }
         else if (activeSlots == 2)
@@ -172,7 +210,10 @@ public class ItemSacrifice : MonoBehaviour
         }
         else if (activeSlots == 1)
         {
-            if (itemRunes[0] != correctRunes[slot]) return false;
+            for (int i = 0; i < correctRunes.Length; i++)
+            {
+                if (itemRunes[i] != correctRunes[i]) return false;
+            }
             return true;
         }
         return false;

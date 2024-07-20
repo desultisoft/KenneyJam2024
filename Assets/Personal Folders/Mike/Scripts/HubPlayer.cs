@@ -58,7 +58,6 @@ public class HubPlayer : MonoBehaviour
         {
             rb.velocity = Vector2.zero;
         }
-       
     }
 
     public void SetCanMove(bool isOn)

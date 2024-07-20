@@ -26,7 +26,6 @@ public class DatingProfile : MonoBehaviour
 
     public void GenerateProfile()
     {
-        if (profileObtained == true) return;
         numRunes = Random.Range(3, 6);
         runeTypes = new runes[numRunes];
         int numItems = items.Length;

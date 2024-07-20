@@ -82,7 +82,8 @@ public class RitualNode : MonoBehaviour
     public void ChangeRune(runes _rune, bool isCorrect)
     {
         requiredRune = _rune;
-        if (isCorrect) spriteRenderer.sprite = correctRuneSprites[(int)_rune];
+        if (_rune == runes.none) spriteRenderer.sprite = null;
+        else if (isCorrect) spriteRenderer.sprite = correctRuneSprites[(int)_rune];
         else spriteRenderer.sprite = incorrectRuneSprites[(int)_rune];
     }
 }
