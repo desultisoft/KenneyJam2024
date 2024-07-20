@@ -6,6 +6,7 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class PostProcessingController : MonoBehaviour
 {
+    public static PostProcessingController PostProcessingSingleton;
     private PostProcessVolume volume;
 
     private float chromaticTarget;
@@ -21,6 +22,11 @@ public class PostProcessingController : MonoBehaviour
     private float cameraShakeProgress;
     private Vector3 cameraStartPosition;
     private Transform cameraTransform;
+
+    private void Awake()
+    {
+        PostProcessingSingleton = this;
+    }
     void Start()
     {
         volume = GetComponent<PostProcessVolume>();

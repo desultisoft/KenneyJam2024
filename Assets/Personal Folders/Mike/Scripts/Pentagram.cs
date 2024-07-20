@@ -25,6 +25,13 @@ public class Pentagram : MonoBehaviour
 
     int lastIndex = 0;
 
+    PostProcessingController postProcessingController;
+
+    private void Start()
+    {
+        postProcessingController = PostProcessingController.PostProcessingSingleton;
+    }
+
     void Awake()
     {
 
@@ -96,7 +103,8 @@ public class Pentagram : MonoBehaviour
 
         if (IsPentagramComplete())
         {
-            //Play some animation
+            postProcessingController.StartChromaticEffect(0.25f, 0.75f);
+            postProcessingController.StartCameraShake(0.05f, 0.2f);
         }
     }
 

@@ -50,7 +50,6 @@ public class RitualNode : MonoBehaviour
 
     private void StartFlash()
     {
-        print("Restarting");
         flashProgress = 0;
         flashDirection = 1;
         isFlashing = true;

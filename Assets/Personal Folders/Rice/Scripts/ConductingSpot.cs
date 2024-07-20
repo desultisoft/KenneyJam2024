@@ -51,16 +51,17 @@ public class ConductingSpot : Interactable
         }
     }
 
-    public void DisconnectPlayer()
+    public void DisconnectPlayer(float delay)
     {
         conducting = false;
         ritualStarted = false;
-        StartCoroutine("ReleasePlayer");
+        IEnumerator coroutine = ReleasePlayer(delay);
+        StartCoroutine(coroutine);
     }
 
-    IEnumerator ReleasePlayer()
+    IEnumerator ReleasePlayer(float waitTime)
     {
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(waitTime);
         player.SetCanMove(true);
     }
 }

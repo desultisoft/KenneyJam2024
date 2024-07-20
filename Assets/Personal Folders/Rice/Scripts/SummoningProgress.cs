@@ -10,6 +10,7 @@ public class SummoningProgress : MonoBehaviour
     private List<RitualNode> ritualNodes;
     private SpriteRenderer progressRenderer;
     private PostProcessingController postProcessingController;
+    private ParticleSystem runeParticleSystem;
     private int arcPointID;
 
     private float numSymbols;
@@ -22,8 +23,9 @@ public class SummoningProgress : MonoBehaviour
 
     private void Start()
     {
-        progressRenderer = GameObject.Find("CircleProgress").GetComponent<SpriteRenderer>();
-        postProcessingController = FindAnyObjectByType<PostProcessingController>();
+        progressRenderer = transform.Find("CircleProgress").GetComponent<SpriteRenderer>();
+        postProcessingController = PostProcessingController.PostProcessingSingleton;
+        runeParticleSystem = GetComponentInChildren<ParticleSystem>();
         arcPointID = Shader.PropertyToID("_Arc2");
     }
 
@@ -64,6 +66,8 @@ public class SummoningProgress : MonoBehaviour
         {
             postProcessingController.StartChromaticEffect(0.4f,0.3f);
             postProcessingController.StartCameraShake(0.05f, 0.3f);
+            runeParticleSystem.emission.SetBurst(0, new ParticleSystem.Burst(0.0f, 1, (short)chantIndex, 2 * (chantIndex + 1), 0.035f));
+            runeParticleSystem.Play();
         }
     }
 
@@ -113,7 +117,7 @@ public class SummoningProgress : MonoBehaviour
         progress = 0;
         lastChant = 0;
         progressStarted = false;
-        conductingSpot.DisconnectPlayer();
+        conductingSpot.DisconnectPlayer(0.3f);
         foreach (RitualNode node in ritualNodes) node.ResetState();
         StartCoroutine("FailFlash");
     }
@@ -123,6 +127,8 @@ public class SummoningProgress : MonoBehaviour
         progress = 0;
         postProcessingController.StartChromaticEffect(1.0f,1.7f);
         postProcessingController.StartCameraShake(0.2f, 1.2f);
+        runeParticleSystem.emission.SetBurst(0, new ParticleSystem.Burst(0.0f, 1, 1, 70, 0.035f));
+        conductingSpot.DisconnectPlayer(1.3f);
         progressStarted = false;
     }
 
