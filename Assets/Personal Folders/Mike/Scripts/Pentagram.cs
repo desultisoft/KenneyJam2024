@@ -22,6 +22,7 @@ public class Pentagram : MonoBehaviour
     [Header("Slots")]
     public List<ItemSlot> candleSlots;
 
+
     int lastIndex = 0;
 
     PostProcessingController postProcessingController;
@@ -108,6 +109,7 @@ public class Pentagram : MonoBehaviour
             itemSacrifice.SetSacrificeSlots(totalRequiredConnections.Count());
         }
     }
+
 
     //Draw the current pentagram.
     public void OnDrawGizmosSelected()

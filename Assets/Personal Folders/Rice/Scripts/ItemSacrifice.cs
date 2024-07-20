@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class ItemSacrifice : MonoBehaviour
 {
     private ItemSlot[] itemSlots;
+    public ItemSlot[] ItemSlots { get { return itemSlots; } }
     private DatingProfile datingProfile;
     private PostProcessingController postProcessingController;
     private int activeSlots;
@@ -93,5 +95,15 @@ public class ItemSacrifice : MonoBehaviour
         postProcessingController.StartChromaticEffect(0.25f, 0.75f);
         postProcessingController.StartCameraShake(0.05f, 0.2f);
         return true;
+    }
+
+
+    public List<runes> GetRunes()
+    {
+        if (itemSlots.Length == 0) return new List<runes>();
+
+        IEnumerable<Item> items = ItemSlots.Select(x => x.currentItem);
+        List<runes> allRunes = items.SelectMany(item => item.runes).ToList();
+        return allRunes;
     }
 }
