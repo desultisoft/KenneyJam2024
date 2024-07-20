@@ -4,40 +4,41 @@ using UnityEngine;
 
 public class SummoningProgress : MonoBehaviour
 {
-    [SerializeField] float progressRate;
-    [SerializeField] HighlightFlash[] circleFlashes;
-    private int numSymbols;
-    private float progress = 0.0f;
+    [SerializeField] float fillProgressRate;
+    [SerializeField] float failFlashRate;
+    [SerializeField] float[] progressIntervals;
+    private List<RitualNode> ritualNodes;
+    private SpriteRenderer progressRenderer;
+    private PostProcessingController postProcessingController;
+    private int arcPointID;
+
+    private float numSymbols;
+    public float progress = 0.0f;
     private bool progressStarted = false;
 
-    private int[] chants;
-    private bool[] chantsTriggered;
-    private bool[] chantsAttempted;
-    private bool[] chantsSucceeded;
     private int lastChant = 0;
 
-    [SerializeField] SpriteRenderer[] symbols;
-    [SerializeField] Sprite[] symbolSprites;
-
+    [HideInInspector] public ConductingSpot conductingSpot;
 
     private void Start()
     {
-        numSymbols = circleFlashes.Length;
-        chantsTriggered = new bool[numSymbols];
-        chantsAttempted = new bool[numSymbols];
-        chantsSucceeded = new bool[numSymbols];
-        chants = new int[numSymbols];
-}
+        progressRenderer = GameObject.Find("CircleProgress").GetComponent<SpriteRenderer>();
+        postProcessingController = FindAnyObjectByType<PostProcessingController>();
+        arcPointID = Shader.PropertyToID("_Arc2");
+    }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) GeneratePattern();
-        if (Input.GetKeyDown(KeyCode.Return)) StartRitual();
         if (progress == 0) return;
-        if (progress > (lastChant / (float)numSymbols))
+        float renderProgress = 360.0f - progress * 360.0f;
+        progressRenderer.material.SetFloat(arcPointID, renderProgress);
+        if (progress > progressIntervals[lastChant])
         {
-            chantsTriggered[lastChant] = true;
-            circleFlashes[lastChant].StartFlash();
+            if (ritualNodes[lastChant].chantSucceeded == false)
+            {
+                FailRitual();
+                return;
+            }
             lastChant++;
         }
         AttemptChant();
@@ -45,69 +46,105 @@ public class SummoningProgress : MonoBehaviour
 
     private void AttemptChant()
     {
-        int chantIndex = lastChant - 1;
-        if (chantsAttempted[chantIndex]) return;
-        int chantType = -1;
-        if (Input.GetKeyDown(KeyCode.UpArrow)) chantType = 0;
-        else if (Input.GetKeyDown(KeyCode.DownArrow)) chantType = 1;
-        else if (Input.GetKeyDown(KeyCode.LeftArrow)) chantType = 2;
-        else if (Input.GetKeyDown(KeyCode.RightArrow)) chantType = 3;
+        int chantIndex = lastChant;
+        runes chantType = runes.none;
+        if (Input.GetKeyDown(KeyCode.UpArrow)) chantType = runes.N;
+        else if (Input.GetKeyDown(KeyCode.DownArrow)) chantType = runes.T;
+        else if (Input.GetKeyDown(KeyCode.LeftArrow)) chantType = runes.L;
+        else if (Input.GetKeyDown(KeyCode.RightArrow)) chantType = runes.I;
 
         if (chantType < 0) return;
-        chantsAttempted[chantIndex] = true;
-        if (chantType == chants[chantIndex])
+        if (ritualNodes[chantIndex].chantAttempted == true)
         {
-            chantsSucceeded[chantIndex] = true;
-            symbols[chantIndex].color = Color.green;
+            FailRitual();
+            return;
         }
-        else CheckRitual();
+        if (!ritualNodes[chantIndex].CompareRune(chantType)) FailRitual();
+        else
+        {
+            postProcessingController.StartChromaticEffect(0.4f,0.3f);
+            postProcessingController.StartCameraShake(0.05f, 0.3f);
+        }
     }
 
     private void FixedUpdate()
     {
         if (progressStarted == false) return;
-        progress += progressRate;
+        progress += fillProgressRate;
         if (progress >= 1.0f)
         {
-            progress = 0;
-            lastChant = 0;
-            progressStarted = false;
             CheckRitual();
         }
     }
 
-    public void StartRitual()
+    public void StartRitual(List<RitualNode> _ritualNodes, ConductingSpot _conductingSpot)
     {
+        conductingSpot = _conductingSpot;
+        ritualNodes = _ritualNodes;
+        numSymbols = ritualNodes.Count;
+        if (progressIntervals.Length != numSymbols)
+        {
+            Debug.LogError("Number of progress intervals incorrect");
+            Debug.Break();
+        }
         progress = 0;
         lastChant = 0;
         progressStarted = true;
     }
 
-    void GeneratePattern()
-    {
-        int numChants = chants.Length;
-        for (int i = 0; i < numChants; i++)
-        {
-            chants[i] = Random.Range(0, 4);
-            symbols[i].sprite = symbolSprites[chants[i]];
-        }
-    }
-
     public void CheckRitual()
     {
         bool succeeded = true;
-        for (int i = 0; i < numSymbols; i++)
+        foreach (RitualNode node in ritualNodes)
         {
-            if (chantsSucceeded[i] == false) succeeded = false;
-            chantsSucceeded[i] = false;
-            chantsAttempted[i] = false;
-            symbols[i].color = Color.white;
+            if (node.chantSucceeded == false) succeeded = false; ;
         }
         if (succeeded) CompleteRitual();
+        else FailRitual();
+    }
+
+    private bool CheckRitualStep(int step)
+    {
+        return ritualNodes[step].chantSucceeded;
+    }
+
+    void FailRitual()
+    {
+        progress = 0;
+        lastChant = 0;
+        progressStarted = false;
+        conductingSpot.DisconnectPlayer();
+        foreach (RitualNode node in ritualNodes) node.ResetState();
+        StartCoroutine("FailFlash");
     }
 
     private void CompleteRitual()
     {
+        progress = 0;
+        postProcessingController.StartChromaticEffect(1.0f,1.7f);
+        postProcessingController.StartCameraShake(0.2f, 1.2f);
+        progressStarted = false;
+    }
 
+    private IEnumerator FailFlash()
+    {
+        float flashProgress = 0.0f;
+        float flashDirection = 1.0f;
+        Color origingColor = progressRenderer.color;
+        while (flashProgress >= 0)
+        {
+            flashProgress += failFlashRate * flashDirection;
+            progressRenderer.color = Vector4.Lerp(origingColor, Color.cyan, flashProgress);
+            if (flashProgress > 1.0f)
+            {
+                flashProgress = 1.0f;
+                origingColor.a = 0.0f;
+                flashDirection = -1.0f;
+            }
+            yield return new WaitForFixedUpdate();
+        }
+        progressRenderer.material.SetFloat(arcPointID, 360);
+        origingColor.a = 1.0f;
+        progressRenderer.color = origingColor;
     }
 }

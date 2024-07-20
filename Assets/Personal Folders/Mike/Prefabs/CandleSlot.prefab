@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4210167050612447246}
   - component: {fileID: 4210167050612447232}
   - component: {fileID: 4210167050612447244}
+  - component: {fileID: 1237212333928303015}
   - component: {fileID: 4210167050612447243}
   m_Layer: 7
   m_Name: CandleSlot
@@ -104,11 +105,28 @@ MonoBehaviour:
   jumpPower: 2
   numJumps: 1
   duration: 1
+  scatter: 0.2
   shakeDelay: 0.3
   shakeDuration: 2
   shakeStrength: 0.25
   shakeVibrato: 1
   shakeRandomness: 0.25
+--- !u!114 &1237212333928303015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4210167050612447233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79269553a7a72e24fb6e7a011d3c11ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rateOfFlash: 0
+  requiredRune: 0
+  chantAttempted: 0
+  chantSucceeded: 0
 --- !u!58 &4210167050612447243
 CircleCollider2D:
   m_ObjectHideFlags: 0

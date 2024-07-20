@@ -20,7 +20,7 @@ public class HighlightFlash : MonoBehaviour
 
     private void Update()
     {
-        spriteRenderer.color = Vector4.Lerp(originColor, Color.white, flashProgress);
+        spriteRenderer.color = Vector4.Lerp(originColor, Color.red, flashProgress);
     }
 
     // Update is called once per frame
