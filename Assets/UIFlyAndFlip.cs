@@ -35,6 +35,7 @@ public class UIFlyAndFlip : MonoBehaviour
     [SerializeField] private Image bio;
     [SerializeField] private List<Sprite> demons;
     [SerializeField] private List<Sprite> bios;
+    [SerializeField] private List<Sprite> emojis;
 
 
     [SerializeField] private List<RuneTranslation> runeTranslations;
@@ -83,14 +84,27 @@ public class UIFlyAndFlip : MonoBehaviour
     public void LoadDemon()
     {
         runes[] neededRunes = DatingProfile.datingProfile.runeTypes;
-
+        int limit = 8;
         foreach(runes rune in neededRunes)
         {
             //Generate an icon on the card.
+            limit--;
             var v = Instantiate(runeIconPrefab);
             v.GetComponent<RectTransform>().SetParent(runeparent);
             Image spriterend = v.GetComponent<Image>();
             spriterend.sprite = runeTranslations.FirstOrDefault(x=>x.rune == rune).sprite;
+
+            bool createEmoji = ReturnsTrueXPercentOfTheTime(50f);
+            if (createEmoji && limit > 0)
+            {
+                limit--;
+                Sprite emoji = GetRandomItem(emojis);
+                var emojiRune = Instantiate(runeIconPrefab);
+                emojiRune.GetComponent<RectTransform>().SetParent(runeparent);
+                Image emojiImage = emojiRune.GetComponent<Image>();
+                emojiImage.sprite = emoji;
+            }
+
         }
 
         demonImage.sprite = GetRandomItem(demons);
@@ -105,5 +119,15 @@ public class UIFlyAndFlip : MonoBehaviour
         System.Random random = new System.Random();
         int randomIndex = random.Next(list.Count);
         return list.ElementAt(randomIndex);
+    }
+
+    private static System.Random random = new System.Random();
+
+    public static bool ReturnsTrueXPercentOfTheTime(float percent)
+    {
+        if (percent < 0 || percent > 100)
+            throw new ArgumentOutOfRangeException(nameof(percent), "Percent must be between 0 and 100");
+
+        return random.NextDouble() < percent / 100;
     }
 }

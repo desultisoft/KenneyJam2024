@@ -8,7 +8,6 @@ public class ItemSacrifice : MonoBehaviour
     private ItemSlot[] itemSlots;
     int filledSlots;
     public ItemSlot[] ItemSlots { get { return itemSlots; } }
-    private DatingProfile datingProfile;
     private PostProcessingController postProcessingController;
     private int activeSlots;
 
@@ -42,18 +41,19 @@ public class ItemSacrifice : MonoBehaviour
     private void Start()
     {
         postProcessingController = PostProcessingController.PostProcessingSingleton;
-        datingProfile = DatingProfile.datingProfile;
     }
 
     public void SetSacrificeSlots(int numCandles)
     {
-        if (!datingProfile)
+        Debug.Log("Setting Sacrifice Slots");
+        if (!DatingProfile.datingProfile)
         {
             Debug.Log("No Dating Profile for sacrifice!");
             return;
         }
 
-        int numRunes = datingProfile.numRunes;
+        int numRunes = DatingProfile.datingProfile.numRunes;
+        Debug.Log("Runes: " + numRunes);
         switch (numRunes)
         {
             case 5:
@@ -201,7 +201,7 @@ public class ItemSacrifice : MonoBehaviour
 
     bool CompareRune(Item item, int slot)
     {
-        runes[] correctRunes = datingProfile.runeTypes;
+        runes[] correctRunes = DatingProfile.datingProfile.runeTypes;
         runes[] itemRunes = item.runes;
         if (activeSlots == 3)
         {
@@ -229,7 +229,7 @@ public class ItemSacrifice : MonoBehaviour
 
     bool CompareRunes()
     {
-        runes[] correctRunes = datingProfile.runeTypes;
+        runes[] correctRunes = DatingProfile.datingProfile.runeTypes;
         List<runes> itemRunes = GetRunes();
         print(itemRunes.Count());
         if (activeSlots == 3)

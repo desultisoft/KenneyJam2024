@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class DateDemon : MonoBehaviour
 {
     Vector3 startPosition;
-    public bool shouldAnimate;
+    private bool shouldAnimate;
     private float pauseTime = 1000;
     int currentProgress;
+    public GameObject heart;
     [SerializeField] float[] speeds;
     [SerializeField] Vector3[] targets;
     [SerializeField] float[] pauses;
 
     Rigidbody2D rb;
     GameObject spriteMask;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,10 +24,19 @@ public class DateDemon : MonoBehaviour
         spriteMask = GameObject.Find("Spritemask");
     }
 
+    public void StartAnimate()
+    {
+        shouldAnimate = true;
+        DatingProfile.datingProfile.Summoned = gameObject;
+        heart.gameObject.SetActive(true);
+    }
+
     // Update is called once per frame
     void FixedUpdate()
     {
-        if (shouldAnimate == false) return;
+        if (shouldAnimate == false)
+            return;
+
         if (pauseTime < pauses[currentProgress])
         {
             pauseTime += Time.fixedDeltaTime;
@@ -41,7 +52,7 @@ public class DateDemon : MonoBehaviour
             rb.velocity = Vector2.zero;
             currentProgress++;
         }
-        if (currentProgress >= targets.Length) ResetAnim();
+        if (currentProgress >= targets.Length) SceneManager.LoadScene(0);
         else if (currentProgress == 1) spriteMask.SetActive(false);
     }
 

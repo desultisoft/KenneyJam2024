@@ -64,7 +64,7 @@ public class HubPlayerInteract : MonoBehaviour
         }
     }
 
-    private Item carriedItem;
+    public Item carriedItem;
     #endregion
 
     public void Awake()

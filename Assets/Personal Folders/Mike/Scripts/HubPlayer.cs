@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class HubPlayer : MonoBehaviour
 {
+    private HubPlayerInteract interact;
     private Animator animator;
     private SpriteRenderer myRenderer;
     private Rigidbody2D rb;
@@ -18,6 +19,7 @@ public class HubPlayer : MonoBehaviour
         rb = GetComponentInChildren<Rigidbody2D>();
         myRenderer = GetComponentInChildren<SpriteRenderer>();
         animator = GetComponentInChildren<Animator>();
+        interact = GetComponentInParent<HubPlayerInteract>();
 
         canMove = true;
     }
@@ -36,7 +38,7 @@ public class HubPlayer : MonoBehaviour
         }
         float xVelocity = Mathf.Abs(rb.velocity.x);
         animator.SetFloat("xVelocity", xVelocity);
-
+        animator.SetBool("carry", interact.carriedItem != null);
         myRenderer.flipX = rb.velocity.x < 0.1;
     }
 

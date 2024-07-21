@@ -27,22 +27,24 @@ public class Pentagram : MonoBehaviour
     int lastIndex = 0;
 
     PostProcessingController postProcessingController;
-    DatingProfile datingProfile;
     ItemSacrifice itemSacrifice;
 
     public List<Animator> lineAnimators;
 
-    private void Start()
+    private void Awake()
     {
-        postProcessingController = PostProcessingController.PostProcessingSingleton;
-        datingProfile = DatingProfile.datingProfile;
-        pentagram = this;
-    }
+        Debug.Log("Pentagram Init");
 
-    void Awake()
-    {
+        postProcessingController = PostProcessingController.PostProcessingSingleton;
+
+        if (pentagram)
+        {
+            Destroy(pentagram);
+        }
+        pentagram = this;
+
         itemSacrifice = GetComponentInChildren<ItemSacrifice>(true);
-        foreach(ItemSlot slot in candleSlots)
+        foreach (ItemSlot slot in candleSlots)
         {
             slot.onDeposit += HandleDeposit;
             slot.locked = true;
@@ -74,13 +76,15 @@ public class Pentagram : MonoBehaviour
         switch (_numRunes)
         {
             case 3:
-                requiredShape = triangleShape;
+                //requiredShape = triangleShape;
+                requiredShape = squareShape;
                 break;
             case 4:
                 requiredShape = squareShape;
                 break;
             case 5:
-                requiredShape = pentagramShape;
+                //requiredShape = pentagramShape;
+                requiredShape = squareShape;
                 break;
         }
     }
@@ -190,6 +194,7 @@ public class Pentagram : MonoBehaviour
     void UpdateLines()
     {
         if (lineAnimators.Count == 0) return;
+
         //Activate line 1 
         if (CheckForContainsConnection(1,2))
         {

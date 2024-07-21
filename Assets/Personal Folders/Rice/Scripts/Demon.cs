@@ -12,6 +12,8 @@ public class Demon : Interactable
     public Transform destination;
     bool shouldMove;
 
+    public Animator hearts;
+
     private void Start()
     {
         datingProfile = DatingProfile.datingProfile;
@@ -21,8 +23,16 @@ public class Demon : Interactable
         shouldMove = true;
     }
 
+
     private void FixedUpdate()
     {
+        if (DatingProfile.datingProfile.Summoned)
+        {
+            shouldMove = true;
+            destination = DatingProfile.datingProfile.Summoned.transform;
+            hearts.gameObject.SetActive(true);
+        }
+
         if (shouldMove)
         {
             Vector3 moveDir = (destination.position - transform.position);

@@ -5,7 +5,6 @@ using UnityEngine;
 public class DatingProfile : MonoBehaviour
 {
     public static DatingProfile datingProfile;
-    Pentagram pentagram;
     public int numRunes;
     public runes[] runeTypes;
 
@@ -17,11 +16,6 @@ public class DatingProfile : MonoBehaviour
     void Awake()
     {
         datingProfile = this;
-    }
-
-    private void Start()
-    {
-        pentagram = Pentagram.pentagram;
     }
 
     public void GenerateProfile()
@@ -54,13 +48,15 @@ public class DatingProfile : MonoBehaviour
                 runeTypes[4] = items[randomIndex].runes[4];
                 break;
         }
-        pentagram.SetShape(numRunes);
+        Pentagram.pentagram.SetShape(numRunes);
         profileObtained = true;
         foreach(runes r in runeTypes)
         {
             Debug.Log(r);
         }
     }
+
+    public GameObject Summoned { get; internal set; }
 
     private int LoopIndex(int index, int max)
     {
