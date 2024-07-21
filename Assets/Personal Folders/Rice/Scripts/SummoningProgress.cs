@@ -156,6 +156,7 @@ public class SummoningProgress : MonoBehaviour
         runeParticleSystem.emission.SetBurst(0, new ParticleSystem.Burst(0.0f, 1, 1, 70, 0.035f));
         conductingSpot.DisconnectPlayer(1.3f);
         progressStarted = false;
+        GameObject.Find("DateDemon").GetComponent<DateDemon>().shouldAnimate = true;
     }
 
     private IEnumerator FailFlash()
