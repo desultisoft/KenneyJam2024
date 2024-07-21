@@ -31,6 +31,12 @@ public class UIFlyAndFlip : MonoBehaviour
     [SerializeField] private Transform runeparent;
     [SerializeField] private Sprite baseRuneSprite;
 
+    [SerializeField] private Image demonImage;
+    [SerializeField] private Image bio;
+    [SerializeField] private List<Sprite> demons;
+    [SerializeField] private List<Sprite> bios;
+
+
     [SerializeField] private List<RuneTranslation> runeTranslations;
 
     private void Awake()
@@ -87,7 +93,17 @@ public class UIFlyAndFlip : MonoBehaviour
             spriterend.sprite = runeTranslations.FirstOrDefault(x=>x.rune == rune).sprite;
         }
 
+        demonImage.sprite = GetRandomItem(demons);
+        bio.sprite = GetRandomItem(bios);
+
         mySequence.Play();
     }
 
+
+    public static T GetRandomItem<T>(List<T> list)
+    {
+        System.Random random = new System.Random();
+        int randomIndex = random.Next(list.Count);
+        return list.ElementAt(randomIndex);
+    }
 }
