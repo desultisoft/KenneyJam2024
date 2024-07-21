@@ -45,23 +45,23 @@ public class SummoningProgress : MonoBehaviour
         {
             if (ritualNodes[lastChant].chantSucceeded == false)
             {
-                FailRitual();
+                FailRitual();   
                 return;
             }
             lastChant++;
-            if (lastChant == 1)
+            if (lastChant % 2 == 0 && lastChant < 5)
             {
                 Rune1.Play();
 
             }
-            else if (lastChant == 2)
+            else if (lastChant % 2 == 1 && lastChant < 5)
             {
                 Rune2.Play();
 
             }
-            else if (lastChant == 3)
+            else if (lastChant == 5)
             {
-                Rune3.Play();
+                Rune3.Play();  
 
             }
         }
