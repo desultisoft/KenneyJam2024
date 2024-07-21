@@ -27,7 +27,6 @@ public class Pentagram : MonoBehaviour
 
     int lastIndex = 0;
 
-    PostProcessingController postProcessingController;
     ItemSacrifice itemSacrifice;
 
     public List<Animator> lineAnimators;
@@ -35,8 +34,6 @@ public class Pentagram : MonoBehaviour
     private void Awake()
     {
         Debug.Log("Pentagram Init");
-
-        postProcessingController = PostProcessingController.PostProcessingSingleton;
 
         if (pentagram)
         {
@@ -77,15 +74,15 @@ public class Pentagram : MonoBehaviour
         switch (_numRunes)
         {
             case 3:
-                //requiredShape = triangleShape;
-                requiredShape = squareShape;
+                requiredShape = triangleShape;
+                //requiredShape = squareShape;
                 break;
             case 4:
                 requiredShape = squareShape;
                 break;
             case 5:
-                //requiredShape = pentagramShape;
-                requiredShape = squareShape;
+                requiredShape = pentagramShape;
+                //requiredShape = squareShape;
                 break;
         }
     }
@@ -163,8 +160,8 @@ public class Pentagram : MonoBehaviour
 
         if (IsPentagramComplete())
         {
-            postProcessingController.StartChromaticEffect(0.25f, 0.75f);
-            postProcessingController.StartCameraShake(0.05f, 0.2f);
+            PostProcessingController.PostProcessingSingleton.StartChromaticEffect(0.25f, 0.75f);
+            PostProcessingController.PostProcessingSingleton.StartCameraShake(0.05f, 0.2f);
 
             itemSacrifice.SetSacrificeSlots(requiredShape.totalRequiredConnections.Count());
         }
