@@ -20,7 +20,10 @@ public class SummoningProgress : MonoBehaviour
     private bool progressStarted = false;
 
     private int lastChant = 0;
-
+    public AudioSource Rune1;
+    public AudioSource Rune2;
+    public AudioSource Rune3;
+    public AudioSource SummoningTriangle;
     [HideInInspector] public ConductingSpot conductingSpot;
 
     private void Start()
@@ -46,6 +49,21 @@ public class SummoningProgress : MonoBehaviour
                 return;
             }
             lastChant++;
+            if (lastChant == 1)
+            {
+                Rune1.Play();
+
+            }
+            else if (lastChant == 2)
+            {
+                Rune2.Play();
+
+            }
+            else if (lastChant == 3)
+            {
+                Rune3.Play();
+
+            }
         }
         AttemptChant();
     }
@@ -157,6 +175,7 @@ public class SummoningProgress : MonoBehaviour
         conductingSpot.DisconnectPlayer(1.3f);
         progressStarted = false;
         GameObject.Find("DatingDemon").GetComponent<DateDemon>().shouldAnimate = true;
+        SummoningTriangle.Play();
     }
 
     private IEnumerator FailFlash()
