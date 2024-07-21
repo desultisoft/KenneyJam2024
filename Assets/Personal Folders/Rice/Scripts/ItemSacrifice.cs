@@ -18,7 +18,7 @@ public class ItemSacrifice : MonoBehaviour
 
     private void Awake()
     {
-        itemSlots = GetComponentsInChildren<ItemSlot>();
+        itemSlots = GetComponentsInChildren<ItemSlot>(true);
         int numSlots = itemSlots.Length;
         foreach (ItemSlot itemSlot in itemSlots)
         {
@@ -35,7 +35,8 @@ public class ItemSacrifice : MonoBehaviour
         }
 
         groundRunes = GetComponentsInChildren<RitualNode>();
-        foreach (RitualNode node in groundRunes) node.gameObject.SetActive(false);
+        foreach (RitualNode node in groundRunes)
+            node.gameObject.SetActive(false);
     }
 
     private void Start()
@@ -43,8 +44,15 @@ public class ItemSacrifice : MonoBehaviour
         postProcessingController = PostProcessingController.PostProcessingSingleton;
         datingProfile = DatingProfile.datingProfile;
     }
+
     public void SetSacrificeSlots(int numCandles)
     {
+        if (!datingProfile)
+        {
+            Debug.Log("No Dating Profile for sacrifice!");
+            return;
+        }
+
         int numRunes = datingProfile.numRunes;
         switch (numRunes)
         {

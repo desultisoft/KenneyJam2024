@@ -20,11 +20,6 @@ public class Demon : Interactable
         SetTarget(new Vector3(9.5f, -3.8f));
     }
 
-    private void Update()
-    {
-
-    }
-
     private void FixedUpdate()
     {
         if (shouldMove)
@@ -46,7 +41,8 @@ public class Demon : Interactable
         datingProfile.GenerateProfile();
         postProcessingController.StartChromaticEffect(0.2f, 0.7f);
         postProcessingController.StartCameraShake(0.1f, 0.2f);
-        UIFlyAndFlip.uIFlyAndFlip.StartSequence();
+
+        UIFlyAndFlip.uIFlyAndFlip.LoadDemon();
     }
 
     public void SetTarget(Vector3 _target)

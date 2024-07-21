@@ -1,9 +1,21 @@
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Collections.Generic;
+using System.Linq;
+using System;
+
+[Serializable]
+public struct RuneTranslation
+{
+    public Sprite sprite;
+    public runes rune;
+}
 
 public class UIFlyAndFlip : MonoBehaviour
 {
+
+
     public static UIFlyAndFlip uIFlyAndFlip;
     public RectTransform uiImage; // Assign the RectTransform of the UI image in the Inspector
     public float flyToCenterDuration = 1f; // Duration for flying to the center
@@ -14,6 +26,12 @@ public class UIFlyAndFlip : MonoBehaviour
     public float maxScale = 3f;
 
     private Sequence mySequence;
+
+    [SerializeField] private GameObject runeIconPrefab;
+    [SerializeField] private Transform runeparent;
+    [SerializeField] private Sprite baseRuneSprite;
+
+    [SerializeField] private List<RuneTranslation> runeTranslations;
 
     private void Awake()
     {
@@ -56,8 +74,20 @@ public class UIFlyAndFlip : MonoBehaviour
     }
 
     // Call this method to start the sequence
-    public void StartSequence()
+    public void LoadDemon()
     {
+        runes[] neededRunes = DatingProfile.datingProfile.runeTypes;
+
+        foreach(runes rune in neededRunes)
+        {
+            //Generate an icon on the card.
+            var v = Instantiate(runeIconPrefab);
+            v.GetComponent<RectTransform>().SetParent(runeparent);
+            Image spriterend = v.GetComponent<Image>();
+            spriterend.sprite = runeTranslations.FirstOrDefault(x=>x.rune == rune).sprite;
+        }
+
         mySequence.Play();
     }
+
 }

@@ -6,10 +6,14 @@ using UnityEngine;
 
 public class Pentagram : MonoBehaviour
 {
+
     public static Pentagram pentagram;
+
     [Header("Data")]
     public List<int> activatedCandles = new List<int>();
     public List<Vector2Int> currentRequiredConnections = new List<Vector2Int>();
+    public List<Vector2Int> currentConnections;
+
     public Shape requiredShape;
 
     [Header("Slots")]
@@ -26,6 +30,8 @@ public class Pentagram : MonoBehaviour
     DatingProfile datingProfile;
     ItemSacrifice itemSacrifice;
 
+    public List<Animator> lineAnimators;
+
     private void Start()
     {
         postProcessingController = PostProcessingController.PostProcessingSingleton;
@@ -35,11 +41,31 @@ public class Pentagram : MonoBehaviour
 
     void Awake()
     {
-        itemSacrifice = GetComponentInChildren<ItemSacrifice>();
+        itemSacrifice = GetComponentInChildren<ItemSacrifice>(true);
         foreach(ItemSlot slot in candleSlots)
         {
             slot.onDeposit += HandleDeposit;
             slot.locked = true;
+        }
+    }
+
+    private void Update()
+    {
+        UpdateLines();
+        if (!requiredShape)
+        {
+            foreach(ItemSlot i in candleSlots)
+            {
+                i.gameObject.SetActive(false);
+            }
+        }
+        else
+        {
+            foreach (ItemSlot i in candleSlots)
+            {
+                i.gameObject.SetActive(true);
+            }
+            currentConnections = requiredShape.totalRequiredConnections.Except(currentRequiredConnections).ToList();
         }
     }
 
@@ -127,6 +153,7 @@ public class Pentagram : MonoBehaviour
         {
             postProcessingController.StartChromaticEffect(0.25f, 0.75f);
             postProcessingController.StartCameraShake(0.05f, 0.2f);
+
             itemSacrifice.SetSacrificeSlots(requiredShape.totalRequiredConnections.Count());
         }
     }
@@ -134,20 +161,114 @@ public class Pentagram : MonoBehaviour
     //Draw the current pentagram.
     public void OnDrawGizmosSelected()
     {
-        if (requiredShape == null) return;
+        if (requiredShape == null)
+            return;
 
-        List<Vector2Int> currentConnections = requiredShape.totalRequiredConnections.Except(currentRequiredConnections).ToList();
-        float radius = 0.2f;
+
+
+        currentConnections = requiredShape.totalRequiredConnections.Except(currentRequiredConnections).ToList();
+        //float radius = 0.2f;
         foreach (Vector2Int connection in currentConnections)
         {
-
             ItemSlot slot1 = candleSlots[connection.x];
             ItemSlot slot2 = candleSlots[connection.y];
 
             Gizmos.DrawLine(slot1.transform.position, slot2.transform.position);
 
-            Gizmos.DrawSphere(slot1.transform.position, radius);
-            radius += 0.1f;
+            //Gizmos.DrawSphere(slot1.transform.position, radius);
+            //radius += 0.1f;
+        }
+
+        
+    }
+
+    public bool CheckForContainsConnection(int index1, int index2)
+    {
+        return currentConnections.Contains(new Vector2Int(index1, index2)) || currentConnections.Contains(new Vector2Int(index2, index1));
+    }
+
+    void UpdateLines()
+    {
+        if (lineAnimators.Count == 0) return;
+        //Activate line 1 
+        if (CheckForContainsConnection(1,2))
+        {
+            lineAnimators[0].SetBool("Activate", true);
+        }
+        else
+        {
+            lineAnimators[0].SetBool("Activate", false);
+        }
+
+        //Activate line 2 
+        if (CheckForContainsConnection(2, 0))
+        {
+            lineAnimators[1].SetBool("Activate", true);
+        }
+        else
+        {
+            lineAnimators[1].SetBool("Activate", false);
+        }
+
+        //Activate line 3
+        if (CheckForContainsConnection(3, 4))
+        {
+            lineAnimators[2].SetBool("Activate", true);
+        }
+        else
+        {
+            lineAnimators[2].SetBool("Activate", false);
+        }
+
+        //Activate line 4
+        if (CheckForContainsConnection(1, 0))
+        {
+            lineAnimators[3].SetBool("Activate", true);
+        }
+        else
+        {
+            lineAnimators[3].SetBool("Activate", false);
+        }
+
+        //Activate line 5
+        if (CheckForContainsConnection(1, 3))
+        {
+            lineAnimators[4].SetBool("Activate", true);
+        }
+        else
+        {
+            lineAnimators[4].SetBool("Activate", false);
+        }
+
+
+        //Activate line 6
+        if (CheckForContainsConnection(4, 0))
+        {
+            lineAnimators[5].SetBool("Activate", true);
+        }
+        else
+        {
+            lineAnimators[5].SetBool("Activate", false);
+        }
+
+        //Activate line 7
+        if (CheckForContainsConnection(4, 1))
+        {
+            lineAnimators[6].SetBool("Activate", true);
+        }
+        else
+        {
+            lineAnimators[6].SetBool("Activate", false);
+        }
+
+        //Activate line 8
+        if (CheckForContainsConnection(3,0))
+        {
+            lineAnimators[7].SetBool("Activate", true);
+        }
+        else
+        {
+            lineAnimators[7].SetBool("Activate", false);
         }
     }
 

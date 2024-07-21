@@ -30,7 +30,9 @@ public class ConductingSpot : Interactable
 
     public void Update()
     {
-        if (!conducting) return;
+        if (!conducting)
+            return;
+
         if (!ritualStarted & ritualDelayTime <= Time.realtimeSinceStartup)
         {
             List<RitualNode> activeNodes = new List<RitualNode>();
