@@ -14,7 +14,11 @@ public class HubPlayerInteract : MonoBehaviour
     public float duration = 1f;
     public Material highlightMaterial;
     public Material defaultMaterial;
-
+    public RandomSoundPlayer Grab;
+    public RandomSoundPlayer GrabCandle;
+    public RandomSoundPlayer GrabSkull;
+    public RandomSoundPlayer PlaceSkull;
+    public RandomSoundPlayer PlaceCandle;
     #region Getters/Setters
     private Interactable targetItem;
     public Interactable TargetItem
@@ -118,6 +122,15 @@ public class HubPlayerInteract : MonoBehaviour
         {
             Debug.Log("Picking up!");
             carriedItem = item;
+            Grab.PlayRandomSound();
+            if (item.itemID == 0)
+            {
+                GrabCandle.PlayRandomSound();
+            }
+            else if (item.itemID == 1)
+            {
+                GrabSkull.PlayRandomSound();
+            }
         }
 
         hubPlayer.SetCanMove(false);
@@ -144,8 +157,17 @@ public class HubPlayerInteract : MonoBehaviour
         carriedItem.gameObject.transform.DOJump(target.position, jumpPower, numJumps, duration)
             .SetEase(Ease.OutQuad)
             .OnComplete(() => {
+                if (carriedItem.itemID == 0)
+                {
+                    PlaceCandle.PlayRandomSound();
+                }
+                else if (carriedItem.itemID == 1)
+                {
+                    PlaceSkull.PlayRandomSound();
+                }
                 hubPlayer.SetCanMove(true);
                 carriedItem = null;
+
             });
     }
 

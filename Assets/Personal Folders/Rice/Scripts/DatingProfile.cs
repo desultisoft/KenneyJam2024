@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class DatingProfile : MonoBehaviour
 {
+    public AudioSource Card;
     public static DatingProfile datingProfile;
     public int numRunes;
     public runes[] runeTypes;
@@ -50,6 +51,7 @@ public class DatingProfile : MonoBehaviour
         }
         Pentagram.pentagram.SetShape(numRunes);
         profileObtained = true;
+        Card.Play();
         foreach(runes r in runeTypes)
         {
             Debug.Log(r);

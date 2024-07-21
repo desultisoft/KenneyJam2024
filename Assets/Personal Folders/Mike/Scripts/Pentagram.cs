@@ -6,7 +6,8 @@ using UnityEngine;
 
 public class Pentagram : MonoBehaviour
 {
-
+    public AudioSource FireLine;
+    public AudioSource FireLineStart;
     public static Pentagram pentagram;
 
     [Header("Data")]
@@ -145,7 +146,14 @@ public class Pentagram : MonoBehaviour
         else
         {
             Debug.Log("Accepting");
-
+            if (activatedCandles.Count == 0)
+            {
+                FireLineStart.Play();
+            }    
+            else if (activatedCandles.Count > 0)
+            {
+                FireLine.Play();
+            }
             //Try to turn on the associated animation between the two spots on the pentagram.
             if (!activatedCandles.Contains(depositIndex))
                 activatedCandles.Add(depositIndex);
@@ -208,6 +216,7 @@ public class Pentagram : MonoBehaviour
         //Activate line 2 
         if (CheckForContainsConnection(2, 0))
         {
+            
             lineAnimators[1].SetBool("Activate", true);
         }
         else
@@ -218,6 +227,7 @@ public class Pentagram : MonoBehaviour
         //Activate line 3
         if (CheckForContainsConnection(3, 4))
         {
+            
             lineAnimators[2].SetBool("Activate", true);
         }
         else
@@ -228,6 +238,7 @@ public class Pentagram : MonoBehaviour
         //Activate line 4
         if (CheckForContainsConnection(1, 0))
         {
+            
             lineAnimators[3].SetBool("Activate", true);
         }
         else
@@ -238,6 +249,7 @@ public class Pentagram : MonoBehaviour
         //Activate line 5
         if (CheckForContainsConnection(1, 3))
         {
+            
             lineAnimators[4].SetBool("Activate", true);
         }
         else
@@ -249,6 +261,7 @@ public class Pentagram : MonoBehaviour
         //Activate line 6
         if (CheckForContainsConnection(4, 0))
         {
+            
             lineAnimators[5].SetBool("Activate", true);
         }
         else
@@ -259,6 +272,7 @@ public class Pentagram : MonoBehaviour
         //Activate line 7
         if (CheckForContainsConnection(4, 1))
         {
+            
             lineAnimators[6].SetBool("Activate", true);
         }
         else
@@ -269,6 +283,7 @@ public class Pentagram : MonoBehaviour
         //Activate line 8
         if (CheckForContainsConnection(3,0))
         {
+            
             lineAnimators[7].SetBool("Activate", true);
         }
         else
