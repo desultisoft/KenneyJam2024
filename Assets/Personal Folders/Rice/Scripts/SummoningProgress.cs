@@ -127,12 +127,12 @@ public class SummoningProgress : MonoBehaviour
                 progressIntervals[3] = 1.0f;
                 break;
             case 5:
-                progressRenderer.material.SetFloat(angleID, 153.0f);
-                progressIntervals[0] = 0.275f;
-                progressIntervals[1] = 0.4695f; 
-                progressIntervals[2] = 0.6417f;
-                progressIntervals[2] = 0.8139f;
-                progressIntervals[3] = 1.0f;
+                progressRenderer.material.SetFloat(angleID, 90.0f);
+                progressIntervals[0] = 0.175f;
+                progressIntervals[1] = 0.38f; 
+                progressIntervals[2] = 0.6277f;
+                progressIntervals[3] = 0.8277f;
+                progressIntervals[4] = 1.0f;
                 break;
         }
         progress = 0;
