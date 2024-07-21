@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7cdd18e8378303845aebe6b590b1d61d
+guid: 5a484a98325a48a4e8d2067f0b322671
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -105,7 +105,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DemonBios_0
+      name: Demons_0
       rect:
         serializedVersion: 2
         x: 0
@@ -119,14 +119,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ba050162426e16440a9d77f5caef0553
-      internalID: 1574024911
+      spriteID: 2ffbd47eb1a26d241bfd1e1455db12c6
+      internalID: -302890135
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DemonBios_1
+      name: Demons_1
       rect:
         serializedVersion: 2
         x: 16
@@ -140,14 +140,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 79525ea4b1142f8438a54ce1d4e3027a
-      internalID: 510273690
+      spriteID: 5196a686a67cb5346a2e4be16941e7cc
+      internalID: 1659921107
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DemonBios_2
+      name: Demons_2
       rect:
         serializedVersion: 2
         x: 32
@@ -161,14 +161,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1d8495a172bec90478fefbb349e4271a
-      internalID: 1347754725
+      spriteID: 24ef73f5e74e3d642bf656158878cb80
+      internalID: 707963302
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DemonBios_3
+      name: Demons_3
       rect:
         serializedVersion: 2
         x: 0
@@ -182,14 +182,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0ab4090d8efcb26409cfb027f6fd8810
-      internalID: 1136937015
+      spriteID: 236403469ba99dd41a1bb48457018e8c
+      internalID: 1040085835
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DemonBios_4
+      name: Demons_4
       rect:
         serializedVersion: 2
         x: 16
@@ -203,14 +203,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 32eef850b44376f42b8861c1b9e70471
-      internalID: 1878458317
+      spriteID: d4fb46bf14bce9a499aa706e50b9fa14
+      internalID: 851637976
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: DemonBios_5
+      name: Demons_5
       rect:
         serializedVersion: 2
         x: 32
@@ -224,8 +224,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1304ed613904cf940bd680cf6062e551
-      internalID: -284354328
+      spriteID: 1ae9404474fc43a4abbcb93611e3e070
+      internalID: -1981555863
       vertices: []
       indices: 
       edges: []
@@ -241,12 +241,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      DemonBios_0: 1574024911
-      DemonBios_1: 510273690
-      DemonBios_2: 1347754725
-      DemonBios_3: 1136937015
-      DemonBios_4: 1878458317
-      DemonBios_5: -284354328
+      Demons_0: -302890135
+      Demons_1: 1659921107
+      Demons_2: 707963302
+      Demons_3: 1040085835
+      Demons_4: 851637976
+      Demons_5: -1981555863
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

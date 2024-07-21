@@ -9,7 +9,7 @@ public class Demon : Interactable
     PostProcessingController postProcessingController;
     Rigidbody2D rb;
 
-    Vector3 target;
+    public Transform destination;
     bool shouldMove;
 
     private void Start()
@@ -17,14 +17,15 @@ public class Demon : Interactable
         datingProfile = DatingProfile.datingProfile;
         postProcessingController = PostProcessingController.PostProcessingSingleton;
         rb = GetComponent<Rigidbody2D>();
-        SetTarget(new Vector3(9.5f, -3.8f));
+
+        shouldMove = true;
     }
 
     private void FixedUpdate()
     {
         if (shouldMove)
         {
-            Vector3 moveDir = (target - transform.position);
+            Vector3 moveDir = (destination.position - transform.position);
             const float targetRange = 0.1f;
             rb.velocity = moveDir.normalized * speed;
             if (moveDir.magnitude < targetRange) shouldMove = false;
@@ -43,11 +44,5 @@ public class Demon : Interactable
         postProcessingController.StartCameraShake(0.1f, 0.2f);
 
         UIFlyAndFlip.uIFlyAndFlip.LoadDemon();
-    }
-
-    public void SetTarget(Vector3 _target)
-    {
-        target = _target;
-        shouldMove = true;
     }
 }
