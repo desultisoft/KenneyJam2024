@@ -56,6 +56,10 @@ public class DatingProfile : MonoBehaviour
         }
         pentagram.SetShape(numRunes);
         profileObtained = true;
+        foreach(runes r in runeTypes)
+        {
+            Debug.Log(r);
+        }
     }
 
     private int LoopIndex(int index, int max)

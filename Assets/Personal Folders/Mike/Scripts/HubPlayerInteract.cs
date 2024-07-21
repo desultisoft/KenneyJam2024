@@ -106,7 +106,10 @@ public class HubPlayerInteract : MonoBehaviour
         if (!item)
             return;
 
-        if (hubPlayerDetect.targetSlot && hubPlayerDetect.targetSlot.currentItem)
+        if (carriedItem)
+            return;
+
+        if (hubPlayerDetect.targetSlot && !hubPlayerDetect.targetSlot.locked && hubPlayerDetect.targetSlot.currentItem)
         {
             Debug.Log("Withdrawing!");
             carriedItem = hubPlayerDetect.targetSlot.Withdraw();
@@ -126,10 +129,13 @@ public class HubPlayerInteract : MonoBehaviour
 
     public void PutDown()
     {
+        Debug.Log("putting Down item");
+
         Transform target = targetSlot ? targetSlot.transform : transform;
 
         if (targetSlot)
         {
+            targetItem = null;
             targetSlot.DepositItem(carriedItem);
         }
 
